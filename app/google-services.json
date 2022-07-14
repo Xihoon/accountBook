@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "796220295404",
+    "firebase_url": "https://moneynote-79dbc-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "moneynote-79dbc",
+    "storage_bucket": "moneynote-79dbc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796220295404:android:c6998a0f7cd9e56a52bdc9",
+        "android_client_info": {
+          "package_name": "com.xihoon.moneynote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796220295404-96g41rjafhugrfke29i3p4iihtt8i9jg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQvtLXT2VvKemfeSVRMYye0EjCVACn4ZU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796220295404-96g41rjafhugrfke29i3p4iihtt8i9jg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
