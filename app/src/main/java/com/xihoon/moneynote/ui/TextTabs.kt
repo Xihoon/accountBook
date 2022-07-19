@@ -17,6 +17,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.xihoon.moneynote.Logger
+import com.xihoon.moneynote.ui.account.AccountUi
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 import kotlinx.coroutines.launch

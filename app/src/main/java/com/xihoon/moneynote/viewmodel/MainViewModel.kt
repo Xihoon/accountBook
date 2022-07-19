@@ -1,12 +1,15 @@
 package com.xihoon.moneynote.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.xihoon.moneynote.repository.Repository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val repository by lazy { Repository() }
@@ -14,8 +17,11 @@ class MainViewModel : ViewModel() {
         repository.setMessage(msg)
     }
 
+    val useList by lazy { repository.uses }
     fun input(useType: String, category: String, account: Int, comment: String) {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.use(useType, category, account, comment, System.currentTimeMillis())
+        }
     }
 
     private val _isMain by lazy { MutableStateFlow(false) }

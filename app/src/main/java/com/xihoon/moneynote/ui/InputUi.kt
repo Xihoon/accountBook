@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.xihoon.moneynote.Logger
+import com.xihoon.moneynote.ui.composable.Spinner
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
