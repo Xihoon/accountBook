@@ -1,23 +1,31 @@
 package com.xihoon.moneynote.ui.account
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.xihoon.moneynote.ui.InputUi
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.xihoon.moneynote.ui.AccountUtil.decimalFormat
+import com.xihoon.moneynote.ui.account.expenses.ExpensesUi
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
+import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
+import java.text.DecimalFormat
 
 @Composable
-fun AccountUi(viewModel: MainViewModel) {
+fun AccountUi(viewModel: MainViewModel, navController: NavController) {
     val openAccount = remember { mutableStateOf(false) }
     val useList = viewModel.useList.collectAsStateLifecycleAware(initial = emptyList())
     Card(
@@ -31,17 +39,39 @@ fun AccountUi(viewModel: MainViewModel) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Column(
+                LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Top
                 ) {
-                    Text(text = "지출")
-                    useList.value?.forEach {
-                        AccountField(use = it)
+                    item {
+                        Row {
+                            Text(
+                                text = "지출 : ", Modifier.padding(top = 10.dp, bottom = 10.dp),
+                                style = MaterialTheme.typography.subtitle1
+                            )
+                            Text(
+                                text = decimalFormat.sum(useList.value?.map { it.use }),
+                                Modifier.padding(top = 10.dp, bottom = 10.dp),
+                                style = MaterialTheme.typography.subtitle1,
+                                color = Color.Red
+
+                            )
+                        }
                     }
+                    useList.value
+                        ?.also { list ->
+                            items(list.size) { item ->
+                                AccountField(list[item]) { useItem ->
+                                    navController.moveDetail(useItem.key)
+                                }
+                            }
+                        }
+                        ?: item {
+                            Text(text = "항목없음")
+                        }
                 }
 
-                InputUi(viewModel = viewModel, open = openAccount)
+                ExpensesUi(viewModel = viewModel, open = openAccount)
 
             }
             Box(
@@ -63,10 +93,18 @@ fun AccountUi(viewModel: MainViewModel) {
     }
 }
 
+private fun DecimalFormat.sum(list: List<Use>?): String {
+    val account = format(
+        list
+            ?.sumOf { it.amount }
+            ?: 0)
+    return "$account 원"
+}
+
 @Preview(showBackground = true)
 @Composable
 fun AccountUiPreview() {
     MoneyNoteTheme {
-        AccountUi(MainViewModel())
+        AccountUi(MainViewModel(), rememberNavController())
     }
 }

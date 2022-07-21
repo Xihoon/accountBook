@@ -3,51 +3,68 @@ package com.xihoon.moneynote.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xihoon.moneynote.repository.Repository
+import com.xihoon.moneynote.ui.DetailEvent
+import com.xihoon.moneynote.ui.logger
+import com.xihoon.moneynote.ui.source.Use
+import com.xihoon.moneynote.ui.source.UseItem
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val repository by lazy { Repository() }
-    fun setMessage(msg: String) {
-        repository.setMessage(msg)
+
+    val assetsTypes by lazy { repository.assetsTypes }
+    fun addAssetsType(type: String) {
+        launchIo { repository.addAssetsType(type) }
     }
 
-    val useList by lazy { repository.uses }
-    fun input(useType: String, category: String, account: Int, comment: String) {
+    val incomeCategory by lazy { repository.incomeCategory }
+    fun addIncomeCategory(category: String) {
+        launchIo { repository.addIncomeCategory(category) }
+    }
+
+    val expenseCategory by lazy { repository.expenseCategory }
+    fun addExpenseCategory(category: String) {
+        launchIo { repository.addExpenseCategory(category) }
+    }
+
+    val useList by lazy { repository.useItems }
+    fun getItemFlow(useKey :String) : Flow<UseItem?> {
+        return useList.map {
+            it?.find { item -> item.key == useKey }
+        }.distinctUntilChanged()
+    }
+    fun use(use: Use) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.use(useType, category, account, comment, System.currentTimeMillis())
+            repository.use(use)
         }
     }
 
-    private val _isMain by lazy { MutableStateFlow(false) }
-    val isMain: StateFlow<Boolean> by lazy { _isMain }
-    fun setMain() {
-        _isMain.value = true
-        _expensesTypes.tryEmit(listOf("고정", "교육", "외식"))
+    fun updateUse(useItem: UseItem) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.update(useItem)
+        }
     }
 
-    fun getMessage() = repository.message
-
-    private val _useTypes by lazy {
-        MutableSharedFlow<List<String>>(
-            1,
-            onBufferOverflow = BufferOverflow.DROP_OLDEST
-        )
+    fun removeUse(useKey: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.remove(useKey)
+        }
     }
 
-    fun useTypes(): SharedFlow<List<String>> = _useTypes
-
-    private val _expensesTypes by lazy {
-        MutableSharedFlow<List<String>>(
-            1,
-            onBufferOverflow = BufferOverflow.DROP_OLDEST
-        )
+    private val openDetailEvent by lazy { Channel<DetailEvent>(Channel.CONFLATED) }
+    val openDetail by lazy { openDetailEvent.receiveAsFlow() }
+    fun openDetail(item: UseItem) {
+        logger.info {"MainViewModel openDetail item:$item"}
+        openDetailEvent.trySend(DetailEvent(item))
     }
 
-    fun expensesTypes(): SharedFlow<List<String>> = _expensesTypes
+    private fun launchIo(action: suspend () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) { action() }
+    }
 }
