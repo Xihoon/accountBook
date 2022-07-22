@@ -1,4 +1,4 @@
-package com.xihoon.moneynote.ui.account
+package com.xihoon.moneynote.ui.assets
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button

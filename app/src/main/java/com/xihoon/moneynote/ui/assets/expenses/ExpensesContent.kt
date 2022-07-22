@@ -1,4 +1,4 @@
-package com.xihoon.moneynote.ui.account.expenses
+package com.xihoon.moneynote.ui.assets.expenses
 
 import android.content.Context
 import androidx.compose.foundation.background
@@ -17,13 +17,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.xihoon.moneynote.ui.AccountUtil
+import com.xihoon.moneynote.ui.Utils
+import com.xihoon.moneynote.ui.Utils.logger
+import com.xihoon.moneynote.ui.Utils.toast
 import com.xihoon.moneynote.ui.composable.Spinner
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
-import com.xihoon.moneynote.ui.logger
 import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
-import com.xihoon.moneynote.ui.toast
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
 @Composable
@@ -230,7 +230,7 @@ private fun Amount(initAmount: String?, amountChanged: (String) -> Unit) {
         value = if (amount.value.isEmpty()) {
             amount.value
         } else {
-            AccountUtil.decimalFormat.format(Integer.parseInt(amount.value))
+            Utils.decimalFormat.format(Integer.parseInt(amount.value))
         },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,

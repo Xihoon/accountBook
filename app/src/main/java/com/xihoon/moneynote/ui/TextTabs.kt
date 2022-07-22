@@ -9,20 +9,16 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.flowWithLifecycle
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.xihoon.moneynote.Logger
-import com.xihoon.moneynote.ui.account.AccountMain
-import com.xihoon.moneynote.ui.account.AccountUi
+import com.xihoon.moneynote.ui.assets.AssetsMain
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
@@ -65,7 +61,7 @@ fun TextTabsUi(viewModel: MainViewModel) {
         ) { index ->
             when (index) {
                 0 -> {
-                    AccountMain(viewModel)
+                    AssetsMain(viewModel)
                 }
                 1 -> {
 

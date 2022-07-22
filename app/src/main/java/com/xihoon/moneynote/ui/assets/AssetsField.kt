@@ -1,4 +1,4 @@
-package com.xihoon.moneynote.ui.account
+package com.xihoon.moneynote.ui.assets
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable

@@ -1,5 +1,7 @@
-package com.xihoon.moneynote.ui.account
+package com.xihoon.moneynote.ui.assets
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
@@ -16,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.xihoon.moneynote.ui.AccountUtil.decimalFormat
-import com.xihoon.moneynote.ui.account.expenses.ExpensesUi
+import com.xihoon.moneynote.ui.Utils.decimalFormat
+import com.xihoon.moneynote.ui.assets.expenses.ExpensesUi
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
 import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
@@ -39,25 +41,23 @@ fun AccountUi(viewModel: MainViewModel, navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
+                Row {
+                    Text(
+                        text = "지출 : ", Modifier.padding(top = 10.dp, bottom = 10.dp),
+                        style = MaterialTheme.typography.subtitle1
+                    )
+                    Text(
+                        text = decimalFormat.sum(useList.value?.map { it.use }),
+                        Modifier.padding(top = 10.dp, bottom = 10.dp),
+                        style = MaterialTheme.typography.subtitle1,
+                        color = Color.Red
+
+                    )
+                }
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Top
                 ) {
-                    item {
-                        Row {
-                            Text(
-                                text = "지출 : ", Modifier.padding(top = 10.dp, bottom = 10.dp),
-                                style = MaterialTheme.typography.subtitle1
-                            )
-                            Text(
-                                text = decimalFormat.sum(useList.value?.map { it.use }),
-                                Modifier.padding(top = 10.dp, bottom = 10.dp),
-                                style = MaterialTheme.typography.subtitle1,
-                                color = Color.Red
-
-                            )
-                        }
-                    }
                     useList.value
                         ?.also { list ->
                             items(list.size) { item ->
@@ -101,9 +101,17 @@ private fun DecimalFormat.sum(list: List<Use>?): String {
     return "$account 원"
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
 @Composable
-fun AccountUiPreview() {
+fun AssetsUiPreview() {
+    MoneyNoteTheme {
+        AccountUi(MainViewModel(), rememberNavController())
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun AssetsNightUiPreview() {
     MoneyNoteTheme {
         AccountUi(MainViewModel(), rememberNavController())
     }

@@ -1,4 +1,4 @@
-package com.xihoon.moneynote.ui.account.detail
+package com.xihoon.moneynote.ui.assets.detail
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,10 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import com.xihoon.moneynote.ui.account.AddDialog
-import com.xihoon.moneynote.ui.account.expenses.ExpensesContent
+import com.xihoon.moneynote.ui.Utils.logger
+import com.xihoon.moneynote.ui.assets.AddDialog
+import com.xihoon.moneynote.ui.assets.expenses.ExpensesContent
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
-import com.xihoon.moneynote.ui.logger
 import com.xihoon.moneynote.ui.source.UseItem
 import com.xihoon.moneynote.viewmodel.MainViewModel
 

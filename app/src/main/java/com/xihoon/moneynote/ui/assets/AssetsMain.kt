@@ -1,16 +1,16 @@
-package com.xihoon.moneynote.ui.account
+package com.xihoon.moneynote.ui.assets
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.xihoon.moneynote.ui.account.detail.DetailUi
-import com.xihoon.moneynote.ui.logger
+import com.xihoon.moneynote.ui.Utils.logger
+import com.xihoon.moneynote.ui.assets.detail.DetailUi
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
 @Composable
-fun AccountMain(viewModel: MainViewModel) {
+fun AssetsMain(viewModel: MainViewModel) {
     logger.info { "AccountMain" }
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = MAIN) {

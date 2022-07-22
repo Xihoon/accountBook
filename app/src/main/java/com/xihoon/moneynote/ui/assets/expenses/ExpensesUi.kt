@@ -1,4 +1,4 @@
-package com.xihoon.moneynote.ui.account.expenses
+package com.xihoon.moneynote.ui.assets.expenses
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -12,7 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.xihoon.moneynote.ui.account.AddDialog
+import com.xihoon.moneynote.ui.assets.AddDialog
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
 @Composable
