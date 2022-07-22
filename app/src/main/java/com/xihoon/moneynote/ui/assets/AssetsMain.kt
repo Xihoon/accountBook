@@ -17,7 +17,7 @@ fun AssetsMain(viewModel: MainViewModel) {
         logger.info { "NavHost" }
         composable(MAIN) {
             logger.info { "navControl main Ui" }
-            AccountUi(viewModel, navController)
+            AssetsUi(viewModel, navController)
         }
 
         composable("${DETAIL}/{useKey}") { backStackEntry ->

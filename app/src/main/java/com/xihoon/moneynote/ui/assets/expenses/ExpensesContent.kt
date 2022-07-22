@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.xihoon.moneynote.ui.Utils
 import com.xihoon.moneynote.ui.Utils.logger
 import com.xihoon.moneynote.ui.Utils.toast
 import com.xihoon.moneynote.ui.composable.Spinner
@@ -227,11 +226,7 @@ private fun Amount(initAmount: String?, amountChanged: (String) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp),
-        value = if (amount.value.isEmpty()) {
-            amount.value
-        } else {
-            Utils.decimalFormat.format(Integer.parseInt(amount.value))
-        },
+        value = amount.value,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         singleLine = true,
         onValueChange = { amountChanged(it.replace(",", "")) },
