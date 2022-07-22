@@ -10,17 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.xihoon.moneynote.ui.Utils.dateFormat
+import com.xihoon.moneynote.ui.Utils.timeFormat
 import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.source.UseItem
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
-@SuppressLint("SimpleDateFormat")
 @Composable
-fun AccountField(item: UseItem, onClick: (UseItem) -> Unit) {
-    val format = SimpleDateFormat("yyyy-MM-dd hh:mm")
+fun AssetsField(item: UseItem, onClick: (UseItem) -> Unit) {
     val use = item.use
     Box(
         modifier = Modifier
@@ -51,7 +50,7 @@ fun AccountField(item: UseItem, onClick: (UseItem) -> Unit) {
                         Modifier.padding(start = 10.dp, end = 10.dp)
                     )
                     Text(
-                        format.format(Date(use.time)),
+                        timeFormat.format(Date(use.time)),
                         Modifier.padding(start = 10.dp, end = 10.dp)
                     )
                 }
@@ -76,7 +75,7 @@ fun AccountField(item: UseItem, onClick: (UseItem) -> Unit) {
 @Composable
 fun AccountFieldPreview() {
     MoneyNoteTheme {
-        AccountField(
+        AssetsField(
             UseItem(
                 "item", Use(
                     "type",

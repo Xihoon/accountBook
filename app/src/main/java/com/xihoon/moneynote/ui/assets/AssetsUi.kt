@@ -3,11 +3,8 @@ package com.xihoon.moneynote.ui.assets
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -17,7 +14,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.xihoon.moneynote.ui.assets.expenses.ExpensesUi
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
-import com.xihoon.moneynote.ui.source.UseItem
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
@@ -34,7 +30,11 @@ fun AssetsUi(viewModel: MainViewModel, navController: NavController) {
 
         Column {
             AssetsHeader(useList) { openExpense.value = true }
-            Box(modifier = Modifier.fillMaxWidth().weight(1f)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
                 AssetsList(useList, navController)
             }
         }
@@ -42,29 +42,6 @@ fun AssetsUi(viewModel: MainViewModel, navController: NavController) {
     }
 }
 
-
-@Composable
-private fun AssetsList(
-    useList: State<List<UseItem>?>,
-    navController: NavController
-) {
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.Top
-    ) {
-        useList.value
-            ?.also { list ->
-                items(list.size) { item ->
-                    AccountField(list[item]) { useItem ->
-                        navController.moveDetail(useItem.key)
-                    }
-                }
-            }
-            ?: item {
-                Text(text = "항목없음")
-            }
-    }
-}
 
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
 @Composable
