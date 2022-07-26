@@ -10,14 +10,14 @@ import com.xihoon.moneynote.ui.assets.detail.DetailUi
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
 @Composable
-fun AssetsMain(viewModel: MainViewModel) {
-    logger.info { "AccountMain" }
+fun AssetsMain(viewModel: MainViewModel, pos: Int) {
+    logger.info { "AccountMain pos:$pos" }
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = MAIN) {
         logger.info { "NavHost" }
         composable(MAIN) {
             logger.info { "navControl main Ui" }
-            AssetsUi(viewModel, navController)
+            AssetsUi(viewModel, navController, pos)
         }
 
         composable("${DETAIL}/{useKey}") { backStackEntry ->

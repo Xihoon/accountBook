@@ -30,6 +30,10 @@ class MainViewModel : ViewModel() {
     }
 
     val useList by lazy { repository.useItems }
+    fun getItems(from: Long, to: Long): Flow<List<UseItem>> {
+        return repository.getItems(from, to)
+    }
+
     fun getItemFlow(useKey: String): Flow<UseItem?> {
         return useList.map {
             it?.find { item -> item.key == useKey }

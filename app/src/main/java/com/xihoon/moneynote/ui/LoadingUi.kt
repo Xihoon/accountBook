@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.xihoon.moneynote.ui.Utils.logger
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -21,12 +22,14 @@ import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun LoadingUi() {
+    logger.info { "LoadingUi"}
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colors.primarySurface, shape = RectangleShape),
         contentAlignment = Alignment.Center
     ) {
+        logger.info { "LoadingUi box"}
         Text(
             text = "Loading...",
             modifier = Modifier.wrapContentSize(),

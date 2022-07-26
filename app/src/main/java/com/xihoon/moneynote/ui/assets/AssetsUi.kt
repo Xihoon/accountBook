@@ -16,11 +16,25 @@ import com.xihoon.moneynote.ui.assets.expenses.ExpensesUi
 import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
+import java.util.*
 
 @Composable
-fun AssetsUi(viewModel: MainViewModel, navController: NavController) {
+fun AssetsUi(viewModel: MainViewModel, navController: NavController, pos: Int) {
     val openExpense = remember { mutableStateOf(false) }
-    val useList = viewModel.useList.collectAsStateLifecycleAware(initial = emptyList())
+    val from = Calendar.getInstance()
+    from.add(Calendar.MONTH, pos)
+    from.set(Calendar.DATE, 1)
+    from.set(Calendar.HOUR_OF_DAY, 0)
+    from.set(Calendar.MINUTE, 0)
+    from.set(Calendar.SECOND, 0)
+    val to = Calendar.getInstance()
+    to.add(Calendar.MONTH, pos + 1)
+    to.set(Calendar.DATE, 0)
+    to.set(Calendar.HOUR_OF_DAY, 23)
+    to.set(Calendar.MINUTE, 59)
+    from.set(Calendar.SECOND, 59)
+    val useList = viewModel.getItems(from.time.time, to.time.time)
+        .collectAsStateLifecycleAware(initial = emptyList())
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -47,7 +61,7 @@ fun AssetsUi(viewModel: MainViewModel, navController: NavController) {
 @Composable
 fun AssetsUiPreview() {
     MoneyNoteTheme {
-        AssetsUi(MainViewModel(), rememberNavController())
+        AssetsUi(MainViewModel(), rememberNavController(), 0)
     }
 }
 
@@ -55,7 +69,7 @@ fun AssetsUiPreview() {
 @Composable
 fun AssetsNightUiPreview() {
     MoneyNoteTheme {
-        AssetsUi(MainViewModel(), rememberNavController())
+        AssetsUi(MainViewModel(), rememberNavController(), 0)
     }
 }
 

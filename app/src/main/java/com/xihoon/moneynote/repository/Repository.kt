@@ -13,9 +13,14 @@ import com.xihoon.moneynote.ui.source.UseItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Repository {
     private val database = Firebase.database
@@ -97,9 +102,7 @@ class Repository {
             override fun onCancelled(error: DatabaseError) {
                 logger.info { "onCancelled: $error" }
             }
-
         })
-
 
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -113,6 +116,39 @@ class Repository {
             }
 
         })
+    }
+
+    fun getItems(from: Long, to: Long): Flow<List<UseItem>> {
+        return callbackFlow {
+            val listener = object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    scope.launch {
+                        logger.info { "getItems snapshot:$snapshot" }
+                        val list: List<UseItem> = snapshot.children.mapNotNull {
+                            val key = it.key
+                            val use = it.getValue(object : GenericTypeIndicator<Use>() {})
+                            key ?: return@mapNotNull null
+                            use ?: return@mapNotNull null
+                            UseItem(key, use)
+
+                        }
+                        logger.info { "getItems from:$from to:$to list:${list.size}" }
+                        send(list)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    logger.info { "onCancelled: $error" }
+                }
+            }
+            val useRef = myRef.child(PATH_USE)
+            val formatter = SimpleDateFormat("yyyy MM dd HH:mm:ss", Locale.getDefault())
+            logger.info { "getItem from:${formatter.format(Date(from))} to:${formatter.format(Date(to))}" }
+            val query = useRef.orderByChild("time").startAt(from.toDouble(), "time")
+                .endAt(to.toDouble(), "time")
+            query.addValueEventListener(listener)
+            awaitClose { query.removeEventListener(listener) }
+        }
     }
 
     suspend fun addAssetsType(type: String) {

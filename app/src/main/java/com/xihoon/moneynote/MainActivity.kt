@@ -10,6 +10,7 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.xihoon.moneynote.ui.MainUi
+import com.xihoon.moneynote.ui.Utils
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
@@ -21,10 +22,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MoneyNoteTheme {
+                logger.info { "MoneyNoteTheme" }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    logger.info { "Surface" }
                     MainUi(viewModel)
                 }
             }
