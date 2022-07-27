@@ -1,5 +1,6 @@
 package com.xihoon.moneynote.ui.assets.expenses
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,9 +11,12 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.xihoon.moneynote.ui.assets.AddDialog
+import com.xihoon.moneynote.ui.assets.AssetsUi
+import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
 @Composable
@@ -32,7 +36,8 @@ fun ExpensesUi(viewModel: MainViewModel, open: MutableState<Boolean>) {
                     false,
                     viewModel,
                     { openUseType.value = it },
-                    { openCategory.value = it }
+                    { openCategory.value = it },
+                    System.currentTimeMillis()
                 ) {
                     viewModel.use(it)
                     open.value = false
@@ -71,3 +76,21 @@ fun ExpensesUi(viewModel: MainViewModel, open: MutableState<Boolean>) {
         }
     }
 }
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun ExpensesUiPreview() {
+    MoneyNoteTheme {
+        ExpensesUi(MainViewModel(), remember { mutableStateOf(false) })
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ExpensesNightUiPreview() {
+    MoneyNoteTheme {
+        ExpensesUi(MainViewModel(), remember { mutableStateOf(false) })
+    }
+}
+
+

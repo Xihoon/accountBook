@@ -1,7 +1,11 @@
 package com.xihoon.moneynote.ui.assets.expenses
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +28,7 @@ import com.xihoon.moneynote.ui.composable.collectAsStateLifecycleAware
 import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
+import java.util.*
 
 @Composable
 fun ExpensesContent(
@@ -31,6 +36,7 @@ fun ExpensesContent(
     viewModel: MainViewModel,
     openUseType: (Boolean) -> Unit,
     openCategory: (Boolean) -> Unit,
+    time: Long?,
     initUseType: String? = null,
     initCategory: String? = null,
     initAmount: String? = null,
@@ -51,6 +57,9 @@ fun ExpensesContent(
             .wrapContentHeight()
             .padding(15.dp)
     ) {
+        var useTime by remember { mutableStateOf(System.currentTimeMillis()) }
+        TimeUi(time) { useTime = it }
+
         var useType by remember { mutableStateOf("") }
         if (!isEditable || initUseType != null) {
             UseType(useTypes, useType.ifEmpty { initUseType }, openUseType) { useType = it }
@@ -87,6 +96,7 @@ fun ExpensesContent(
                 CompleteButton(
                     context,
                     isEditable,
+                    useTime,
                     useType.ifEmpty { initUseType ?: "" },
                     category.ifEmpty { initCategory ?: "" },
                     amount.ifEmpty { initAmount ?: "" },
@@ -105,6 +115,114 @@ fun ExpensesContent(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun TimeUi(time: Long?, update: (time: Long) -> Unit) {
+    if (time == null) return
+    val calendar = Calendar.getInstance().also { it.time = Date(time) }
+    val updateCalendar = Calendar.getInstance().also { it.time = Date(time) }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("날짜:")
+
+        ShowDatePicker(
+            LocalContext.current,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ) { year, month, day ->
+            logger.info { "date changed $year,$month,$day" }
+            updateCalendar.set(year, month, day)
+            update(updateCalendar.timeInMillis)
+        }
+        ShowTimePicker(
+            LocalContext.current,
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE)
+        ) { hour, minute ->
+            logger.info { "time changed $hour:$minute" }
+            updateCalendar.set(Calendar.HOUR_OF_DAY, hour)
+            updateCalendar.set(Calendar.MINUTE, minute)
+            update(updateCalendar.timeInMillis)
+        }
+    }
+}
+
+@Composable
+private fun ShowDatePicker(
+    context: Context,
+    initYear: Int,
+    initMonth: Int,
+    initDay: Int,
+    updatedTime: (year: Int, month: Int, day: Int) -> Unit
+) {
+    val date = remember { mutableStateOf("$initYear-${initMonth + 1}-$initDay") }
+    val datePicker = DatePickerDialog(
+        context,
+        { _, year: Int, month: Int, day: Int ->
+            updatedTime(year, month, day)
+            date.value = "$year-${month + 1}-$day"
+        },
+        initYear, initMonth, initDay
+    )
+    Box(Modifier.clickable { datePicker.show() }) {
+        Text(text = date.value)
+    }
+
+}
+
+@Composable
+private fun ShowTimePicker(
+    context: Context,
+    initHour: Int,
+    initMinute: Int,
+    select: (hour: Int, minute: Int) -> Unit
+) {
+    val time = remember { mutableStateOf("${convertHour(initHour)}:${convertMinute(initMinute)}") }
+    val timePickerDialog = TimePickerDialog(
+        context,
+        { _, hour: Int, minute: Int ->
+            time.value = "${convertHour(hour)}:${convertMinute(minute)}"
+            select(hour, minute)
+        }, initHour, initMinute, true
+    )
+    Box(Modifier.clickable { timePickerDialog.show() }) {
+        Text(text = time.value)
+    }
+}
+
+private fun convertHour(hour: Int) = when (hour) {
+    0 -> "0"
+    in 1..9 -> "0$hour"
+    else -> hour.toString()
+}
+
+private fun convertMinute(minute: Int) = when (minute) {
+    0 -> "00"
+    in 1..9 -> "0$minute"
+    else -> minute.toString()
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun ShowTimePickerUiPreview() {
+    MoneyNoteTheme {
+        TimeUi(System.currentTimeMillis()) { }
+    }
+}
+
+@Preview(showBackground = false, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ShowTimePickerNightUiPreview() {
+    MoneyNoteTheme {
+        TimeUi(System.currentTimeMillis()) { }
     }
 }
 
@@ -252,6 +370,7 @@ private fun Comment(initComment: String?, commentChanged: (String) -> Unit) {
 private fun CompleteButton(
     context: Context,
     isEditable: Boolean,
+    useTime: Long,
     useType: String,
     category: String,
     amount: String,
@@ -283,7 +402,7 @@ private fun CompleteButton(
                     category,
                     amount.toInt(),
                     comment,
-                    System.currentTimeMillis()
+                    useTime
                 )
             )
         }
@@ -314,7 +433,9 @@ fun ExpensesContentPreview() {
             false,
             MainViewModel(),
             { },
-            { }) {}
+            { },
+            System.currentTimeMillis()
+        ) {}
     }
 }
 
@@ -326,6 +447,8 @@ fun ExpensesContentEditablePreview() {
             true,
             MainViewModel(),
             { },
-            { }) {}
+            { },
+            System.currentTimeMillis()
+        ) {}
     }
 }

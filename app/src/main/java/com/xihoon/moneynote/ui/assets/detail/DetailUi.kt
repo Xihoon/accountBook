@@ -101,6 +101,7 @@ private fun DetailContent(
         viewModel,
         { openUseType(it) },
         { openCategory(it) },
+        item.value?.use?.time,
         item.value?.use?.useType,
         item.value?.use?.category,
         item.value?.use?.amount?.toString(),

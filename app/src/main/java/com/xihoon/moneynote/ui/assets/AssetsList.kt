@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.xihoon.moneynote.ui.Utils.dateFormat
 import com.xihoon.moneynote.ui.Utils.decimalFormat
 import com.xihoon.moneynote.ui.Utils.sum
+import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.source.UseItem
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import java.util.*
@@ -64,9 +65,11 @@ private fun DateHeader(date: String, amount: String) {
             .background(MaterialTheme.colors.secondary)
     ) {
         Row {
-            Text(text = date, modifier = Modifier
-                .weight(1f)
-                .wrapContentHeight())
+            Text(
+                text = date, modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight()
+            )
             Text(text = amount, color = Color.Red)
         }
 
@@ -110,12 +113,12 @@ fun AssetsListPreview() {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            AssetsList(remember { mutableStateOf(emptyList()) }, rememberNavController())
+            AssetsList(remember { mutableStateOf(previewItem) }, rememberNavController())
         }
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(showBackground = false, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AssetsListNightUiPreview() {
     MoneyNoteTheme {
@@ -124,7 +127,19 @@ fun AssetsListNightUiPreview() {
                 .fillMaxWidth()
                 .wrapContentHeight()
         ) {
-            AssetsList(remember { mutableStateOf(emptyList()) }, rememberNavController())
+            AssetsList(remember { mutableStateOf(previewItem) }, rememberNavController())
         }
     }
 }
+
+private val previewItem = listOf(
+    UseItem(
+        "key",
+        Use(
+            useType = "카드",
+            category = "간식",
+            amount = 10000,
+            comment = "하하"
+        )
+    )
+)
