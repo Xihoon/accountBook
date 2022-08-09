@@ -23,6 +23,7 @@ import com.xihoon.moneynote.ui.Utils.sum
 import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.source.UseItem
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
+import com.xihoon.moneynote.ui.theme.RED
 import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -70,7 +71,7 @@ private fun DateHeader(date: String, amount: String) {
                     .weight(1f)
                     .wrapContentHeight()
             )
-            Text(text = amount, color = Color.Red)
+            Text(text = amount, color = RED)
         }
 
     }

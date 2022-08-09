@@ -17,7 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.xihoon.moneynote.ui.Utils
 import com.xihoon.moneynote.ui.Utils.sum
 import com.xihoon.moneynote.ui.source.UseItem
+import com.xihoon.moneynote.ui.theme.BLUE
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
+import com.xihoon.moneynote.ui.theme.RED
 
 @Composable
 fun AssetsHeader(useList: State<List<UseItem>?>, openExpenseUI: () -> Unit) {
@@ -36,7 +38,7 @@ fun AssetsHeader(useList: State<List<UseItem>?>, openExpenseUI: () -> Unit) {
                 .weight(1f)
                 .wrapContentHeight(),
             style = MaterialTheme.typography.subtitle1,
-            color = Color.Blue
+            color = BLUE
         )
         Text(text = "지출 : ", style = MaterialTheme.typography.subtitle1)
         Box(
@@ -48,7 +50,7 @@ fun AssetsHeader(useList: State<List<UseItem>?>, openExpenseUI: () -> Unit) {
             Text(
                 text = Utils.decimalFormat.sum(useList.value?.map { it.use }),
                 style = MaterialTheme.typography.subtitle1,
-                color = Color.Red
+                color = RED
             )
         }
         InputButton(openExpenseUI)

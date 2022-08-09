@@ -15,6 +15,7 @@ import com.xihoon.moneynote.ui.Utils.timeFormat
 import com.xihoon.moneynote.ui.source.Use
 import com.xihoon.moneynote.ui.source.UseItem
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
+import com.xihoon.moneynote.ui.theme.RED
 import java.text.DecimalFormat
 import java.util.*
 
@@ -64,7 +65,7 @@ fun AssetsField(item: UseItem, onClick: (UseItem) -> Unit) {
             Text(
                 decimalFormat.format(use.amount),
                 Modifier.padding(10.dp),
-                color = Color.Red
+                color = RED
             )
         }
 

@@ -1,13 +1,11 @@
 package com.xihoon.moneynote.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import com.xihoon.moneynote.Logger
 import com.xihoon.moneynote.ui.source.Use
 import java.text.DateFormat
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 
 object Utils {
     val logger by lazy { Logger() }
@@ -26,6 +24,11 @@ object Utils {
                 ?.sumOf { it.amount }
                 ?: 0
         )
+        return "$account 원"
+    }
+
+    fun DecimalFormat.convert(amount: Long): String {
+        val account = format(amount)
         return "$account 원"
     }
 }

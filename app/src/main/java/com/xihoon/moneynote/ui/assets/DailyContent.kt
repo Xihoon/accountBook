@@ -10,7 +10,7 @@ import com.xihoon.moneynote.ui.assets.detail.DetailUi
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
 @Composable
-fun AssetsMain(viewModel: MainViewModel, pos: Int) {
+fun DailyContent(viewModel: MainViewModel, pos: Int) {
     logger.info { "AccountMain pos:$pos" }
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = MAIN) {

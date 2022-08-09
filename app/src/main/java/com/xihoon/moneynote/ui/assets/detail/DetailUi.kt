@@ -38,8 +38,8 @@ fun DetailUi(
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(15.dp),
-        elevation = 10.dp
+            .padding(5.dp),
+        elevation = 5.dp
     ) {
         logger.info { "DetailUi Card" }
         Box(modifier = Modifier.fillMaxSize()) {
