@@ -1,7 +1,6 @@
 package com.xihoon.moneynote
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,9 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.xihoon.moneynote.ui.MainUi
-import com.xihoon.moneynote.ui.Utils
 import com.xihoon.moneynote.ui.theme.MoneyNoteTheme
 import com.xihoon.moneynote.viewmodel.MainViewModel
 
